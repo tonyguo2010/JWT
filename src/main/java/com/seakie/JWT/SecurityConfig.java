@@ -16,13 +16,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import com.seakie.JWT.TokenValidatorFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 	
-	TokenValidatorFilter tokenValidatorFilter() {
+	@Bean
+	public TokenValidatorFilter tokenValidatorFilter() {
 		return new TokenValidatorFilter();
 	};
 
@@ -41,6 +43,7 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(
 				auth -> auth.requestMatchers("/user").hasRole("USER")
+							.requestMatchers("/admin").hasRole("ADMIN")
 							.anyRequest().permitAll()
 				)
 			.addFilterBefore(tokenValidatorFilter(), UsernamePasswordAuthenticationFilter.class);

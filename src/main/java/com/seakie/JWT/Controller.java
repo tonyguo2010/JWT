@@ -17,4 +17,21 @@ public class Controller {
 	public String userAccessible() {
 		return "Accessible by USER role";
 	}
+
+	@GetMapping("/admin")
+	@PreAuthorize("hasRole('ADMIN')") // Requires ROLE_ADMIN
+	public String adminAccessible() {
+		return "Accessible by ADMIN role";
+	}
+
+	@GetMapping("/userToken")
+	public String userToken() {
+		return JWTToken.generateUserToken();
+	}
+	
+	@GetMapping("/adminToken")
+	public String adminToken() {
+		return JWTToken.generateAdminToken();
+	}
+	
 }
